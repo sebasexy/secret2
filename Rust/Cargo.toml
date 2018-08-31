@@ -1,0 +1,8 @@
+[package]
+name = "Rust"
+version = "0.1.0"
+authors = ["Miguel Pérez García <miguelpg_95@hotmail.com>"]
+
+[dependencies]
+hyper = "0.12.9"
+futures = "0.1.23"

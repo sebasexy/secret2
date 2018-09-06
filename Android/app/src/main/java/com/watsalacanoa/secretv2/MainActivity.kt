@@ -1,26 +1,75 @@
 package com.watsalacanoa.secretv2
 
+import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.View
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
 
+    private class Content(mContext: Context, list_elements: ArrayList<String>)
+        : ArrayAdapter<String>(mContext,0, list_elements){
+
+        private val inflator = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        override fun getView(position: Int, convertView: View?,parent: ViewGroup?): View {
+
+            val element = getItem(position)
+
+            var listItem = convertView
+            if(listItem == null)
+                listItem = inflator.inflate(R.layout.post, parent, false)
+
+            val contentText = listItem!!.findViewById<TextView>(R.id.content)
+            contentText.text = element
+            return listItem
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val elementsArray = ArrayList<String>()
+
+        elementsArray.add("Holaa")
+        elementsArray.add("Pitochu")
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
+        supportActionBar?.title = "Tablon"
 
-        val fab = findViewById<View>(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        val listView = findViewById<ListView>(R.id.main_listView)
+        listView.adapter = Content(this, elementsArray)
+
+        val btnAddElement = findViewById<View>(R.id.btnAddNewElement)
+        btnAddElement.setOnClickListener{
+
+            val mBuilder = AlertDialog.Builder(this)
+
+            val mView = LayoutInflater.from(this).inflate(R.layout.dialog_new_comment, null)
+            val mComment = mView.findViewById<EditText>(R.id.idTextNewComment)
+            val btnShare = mView.findViewById<Button>(R.id.btnShare)
+
+            mBuilder.setView(mView)
+
+            val alert = mBuilder.create()
+            val btnCancel = mView.findViewById<Button>(R.id.btnCancel)
+
+            btnShare.setOnClickListener{
+                if(!mComment.text.isEmpty()){
+                    Toast.makeText(this, mComment.text, Toast.LENGTH_SHORT).show()
+                    alert.cancel()
+                }
+            }
+
+            btnCancel.setOnClickListener {
+                alert.cancel()
+            }
+            alert.show()
         }
     }
 
@@ -40,4 +89,6 @@ class MainActivity : AppCompatActivity() {
             true
         } else super.onOptionsItemSelected(item)
     }
+
+
 }

@@ -14,37 +14,33 @@ import android.widget.*
 class MainActivity : AppCompatActivity() {
 
 
-    private class Content(context: Context): BaseAdapter(){
+    private class Content(val mContext: Context, val list_elements: ArrayList<String>)
+        :ArrayAdapter<String>(mContext,android.R.layout.simple_list_item_1, list_elements){
 
-        private val mContext: Context
 
-        init {
-            mContext = context
-        }
 
-        override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-            val textView = TextView(mContext)
+        override fun getView(position: Int, convertView: View?,parent: ViewGroup?): View {
+            /*val textView = TextView(mContext)
             textView.text = "Hola"
+            return textView*/
+
+            val element = getItem(position)
+            val textView = TextView(mContext)
             return textView
+
         }
 
-        override fun getItem(p0: Int): Any {
-            return "Test String"
-        }
-
-        override fun getItemId(p0: Int): Long {
-            return 0
-        }
-
-        override fun getCount(): Int {
-            return 5
-        }
 
 
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        var elements_array = ArrayList<String>()
+
+        elements_array.add("Holaa")
+        elements_array.add("Pitochu")
 
 
         var elements_to_display: Int = 0
@@ -55,12 +51,14 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setTitle("Tablon")
 
         val listView = findViewById<ListView>(R.id.main_listView)
-        listView.adapter = Content(this)
+        listView.adapter = Content(this, elements_array)
+
 
 
         var btnAddElement = findViewById<View>(R.id.btnAddNewElement)
         btnAddElement.setOnClickListener{
-            val mBuilder = AlertDialog.Builder(this@MainActivity)
+
+            val mBuilder = AlertDialog.Builder(this)
 
             var mView = LayoutInflater.from(this).inflate(R.layout.dialog_new_comment, null)
             var mComment = mView.findViewById<EditText>(R.id.idTextNewComment)
@@ -73,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             mBuilder.setView(mView)
+            mBuilder.show()
 
         }
 

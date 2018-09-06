@@ -11,11 +11,12 @@
         android:id="@+id/tvNewComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/rammetto_one"
+        android:fontFamily="@font/bubbler_one"
         android:text="Share your ideas"
         android:textAlignment="center"
         android:textColor="@android:color/holo_orange_dark"
         android:textSize="24sp"
+        android:textStyle="bold"
         android:visibility="visible" />
 
     <EditText

@@ -1,8 +1,9 @@
 use json::JsonValue;
+use rand::random;
 
 pub struct Point {
     pub lat:f32,
-    pub lon:f32
+    pub long:f32
 }
 
 pub struct Post {
@@ -20,6 +21,18 @@ pub struct PostResponse {
     pub continuation_token:i32
 }
 
+impl Point {
+    pub fn new() -> Point {
+        Point { lat: 0.0f32, long: 0.0f32 }
+    }
+
+    pub fn random() -> Point{
+        let lat = random();
+        let long = random();
+        Point { lat, long }
+    }
+}
+
 impl Into<JsonValue> for PostResponse {
     fn into(self) -> JsonValue {
         object! {
@@ -33,7 +46,7 @@ impl Into<JsonValue> for Point {
     fn into(self) -> JsonValue {
         object! {
             "lat" => self.lat,
-            "lon" => self.lon
+            "long" => self.long
         }
     }
 }

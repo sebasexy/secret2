@@ -2,10 +2,11 @@
 extern crate json;
 extern crate hyper;
 extern crate futures;
+extern crate rand;
 
 mod models;
 
-use hyper::{Server, Request, Response, Body, Method};
+use hyper::{Server, Request, Response, Body, Method, StatusCode};
 use hyper::rt::{Future};
 use futures::future;
 use hyper::service::service_fn;
@@ -26,29 +27,36 @@ fn main() {
 }
 
 fn route_request(req: Request<Body>) -> BoxFut {
-    let mut response = Response::new(Body::empty());
-
     match(req.method(), req.uri().path()){
-        (&Method::POST, "/posts") => {
-
-            *response.body_mut() = Body::from(String::from("Hello"));
-        },
-        _ => {
-            let location = Point {
-                lat: 123.23f32,
-                lon: 323.12f32
-            };
+        (&Method::GET, "/posts") => {
+            let location = Point::random();
 
             let post = Post {
                 content: String::from("Hello"),
                 location
             };
 
-            let js_obj = json::stringify(post);
+            let blog_response = PostResponse {
+                posts:vec![post],
+                continuation_token:0
+            };
 
-            *response.body_mut() = Body::from(js_obj);
+            let js_obj = json::stringify(blog_response);
+
+            let response = Response::builder()
+                .status(StatusCode::OK)
+                .header("Content-Type", "application/json")
+                .body(Body::from(js_obj))
+                .unwrap();
+
+           Box::new(future::ok(response))
+        }
+        _ => {
+            let response = Response::builder()
+                .status(StatusCode::NotFound)
+                .unwrap();
+
+            Box::new(future::ok(response))
         }
     }
-
-    Box::new(future::ok(response))
 }

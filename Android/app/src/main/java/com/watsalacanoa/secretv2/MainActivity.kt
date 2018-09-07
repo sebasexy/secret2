@@ -5,23 +5,23 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.*
 import android.widget.*
 
 class MainActivity : AppCompatActivity() {
 
-    private class Content(mContext: Context, list_elements: ArrayList<String>)
-        : ArrayAdapter<String>(mContext,0, list_elements){
+    private class Content(mContext: Context, listElements: ArrayList<String>)
+        : ArrayAdapter<String>(mContext,0, listElements){
 
-        private val inflator = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        private val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         override fun getView(position: Int, convertView: View?,parent: ViewGroup?): View {
-
             val element = getItem(position)
 
             var listItem = convertView
             if(listItem == null)
-                listItem = inflator.inflate(R.layout.post, parent, false)
+                listItem = inflater.inflate(R.layout.post, parent, false)
 
             val contentText = listItem!!.findViewById<TextView>(R.id.content)
             contentText.text = element
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val elementsArray = ArrayList<String>()
 
         elementsArray.add("Holaa")
-        elementsArray.add("Pitochu")
+        elementsArray.add("Pikachu")
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -61,7 +61,9 @@ class MainActivity : AppCompatActivity() {
 
             btnShare.setOnClickListener{
                 if(!mComment.text.isEmpty()){
-                    Toast.makeText(this, mComment.text, Toast.LENGTH_SHORT).show()
+                    runOnUiThread {
+                        elementsArray.add(mComment.text.toString())
+                    }
                     alert.cancel()
                 }
             }

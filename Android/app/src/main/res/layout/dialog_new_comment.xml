@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bubbler_one"
-        android:text="Share your ideas"
+        android:text="¡Comparte tus ideas!"
         android:textAlignment="center"
         android:textColor="@android:color/holo_orange_dark"
         android:textSize="24sp"
@@ -23,7 +23,7 @@
         android:id="@+id/idTextNewComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Write here!"
+        android:hint="¡Escribe aquí!"
         android:singleLine="false"
         android:textAlignment="center"
         android:textSize="18sp" />

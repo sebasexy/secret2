@@ -1,82 +1,79 @@
 package com.watsalacanoa.secretv2
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.*
 import android.widget.*
 
 class MainActivity : AppCompatActivity() {
 
+    private class Content(mContext: Context, listElements: ArrayList<String>)
+        : ArrayAdapter<String>(mContext,0, listElements){
 
-    private class Content(val mContext: Context, val list_elements: ArrayList<String>)
-        :ArrayAdapter<String>(mContext,android.R.layout.simple_list_item_1, list_elements){
-
-
+        private val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         override fun getView(position: Int, convertView: View?,parent: ViewGroup?): View {
-            /*val textView = TextView(mContext)
-            textView.text = "Hola"
-            return textView*/
-
             val element = getItem(position)
-            val textView = TextView(mContext)
-            return textView
 
+            var listItem = convertView
+            if(listItem == null)
+                listItem = inflater.inflate(R.layout.post, parent, false)
+
+            val contentText = listItem!!.findViewById<TextView>(R.id.content)
+            contentText.text = element
+            return listItem
         }
-
-
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        var elements_array = ArrayList<String>()
+        val elementsArray = ArrayList<String>()
 
-        elements_array.add("Holaa")
-        elements_array.add("Pitochu")
+        elementsArray.add("Holaa")
+        elementsArray.add("Pikachu")
 
-
-        var elements_to_display: Int = 0
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-        supportActionBar?.setTitle("Tablon")
+        supportActionBar?.title = "Tablon"
 
         val listView = findViewById<ListView>(R.id.main_listView)
-        listView.adapter = Content(this, elements_array)
+        listView.adapter = Content(this, elementsArray)
 
-
-
-        var btnAddElement = findViewById<View>(R.id.btnAddNewElement)
+        val btnAddElement = findViewById<View>(R.id.btnAddNewElement)
         btnAddElement.setOnClickListener{
 
             val mBuilder = AlertDialog.Builder(this)
 
-            var mView = LayoutInflater.from(this).inflate(R.layout.dialog_new_comment, null)
-            var mComment = mView.findViewById<EditText>(R.id.idTextNewComment)
-            var btnShare = mView.findViewById<Button>(R.id.btnShare)
-            var btnCancel = mView.findViewById<Button>(R.id.btnCancel)
+            val mView = LayoutInflater.from(this).inflate(R.layout.dialog_new_comment, null)
+            val mComment = mView.findViewById<EditText>(R.id.idTextNewComment)
+            val btnShare = mView.findViewById<Button>(R.id.btnShare)
+
+            mBuilder.setView(mView)
+
+            val alert = mBuilder.create()
+            val btnCancel = mView.findViewById<Button>(R.id.btnCancel)
 
             btnShare.setOnClickListener{
                 if(!mComment.text.isEmpty()){
-                    Toast.makeText(this, mComment.text, Toast.LENGTH_SHORT).show()
+                    runOnUiThread {
+                        elementsArray.add(mComment.text.toString())
+                    }
+                    alert.cancel()
                 }
             }
-            mBuilder.setView(mView)
-            mBuilder.show()
 
+            btnCancel.setOnClickListener {
+                alert.cancel()
+            }
+            alert.show()
         }
-
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

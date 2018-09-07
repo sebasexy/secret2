@@ -3,6 +3,6 @@
  */
 class Message {
     val message = ""
-    val id : Int?
+    val id : Int = 0
 
 }

@@ -12,7 +12,7 @@ import com.google.gson.Gson
 
 
 class UserService (val defaultUrl: String){
-    val gson = Gson();
+    val gson = Gson()
 
     fun createMessage(message: Message): Message{
         TODO("not implemented")
@@ -36,7 +36,7 @@ class UserService (val defaultUrl: String){
 
     fun updateUser(user: Message): Task<Message?>{
         val future = TaskCompletionSource<Message?>()
-        val connection = URL("$default/Messages").openConnection() as HttpURLConnection
+        val connection = URL("$defaultUrl/Messages").openConnection() as HttpURLConnection
         connection.requestMethod = "POST"
         connection.setRequestProperty("Authorization", "")
         val json = gson.toJson(user)

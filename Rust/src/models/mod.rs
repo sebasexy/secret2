@@ -55,7 +55,7 @@ impl Into<JsonValue> for PostRequest {
     fn into(self) -> JsonValue {
         object! {
             "location" => self.location,
-            "continuation_token" => self.continuation_token
+            "continuationToken" => self.continuation_token
         }
     }
 }

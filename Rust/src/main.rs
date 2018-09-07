@@ -36,8 +36,13 @@ fn route_request(req: Request<Body>) -> BoxFut {
                 location
             };
 
+            let post2 = Post{
+                content: String::from("Sebas se la come"),
+                location: Point::random()
+            };
+
             let blog_response = PostResponse {
-                posts:vec![post],
+                posts:vec![post, post2],
                 continuation_token:0
             };
 
@@ -53,7 +58,8 @@ fn route_request(req: Request<Body>) -> BoxFut {
         }
         _ => {
             let response = Response::builder()
-                .status(StatusCode::NotFound)
+                .status(StatusCode::OK)
+                .body(Body::empty())
                 .unwrap();
 
             Box::new(future::ok(response))

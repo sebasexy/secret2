@@ -66,3 +66,7 @@ fastlane/readme.md
 
 target/
 **/*.rs.bk
+.vscode/
+
+[Oo]bj
+[Bb]in

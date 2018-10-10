@@ -1,5 +1,6 @@
 module Handlers
 
+open System
 open Giraffe
 open Microsoft.AspNetCore.Http
 open System.IO
@@ -7,7 +8,6 @@ open System.Text
 open FSharp.Control.Tasks.V2.ContextInsensitive
 
 open Models
-open System
 
 let rnd = new Random();
 

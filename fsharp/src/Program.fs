@@ -10,6 +10,11 @@ open Microsoft.Extensions.DependencyInjection
 open Giraffe
 
 open Handlers
+open Database
+open Models
+open MongoDB.Driver
+
+let mongoCollection:IMongoCollection<Post> = null
 
 let webApp =
     choose [
@@ -23,8 +28,8 @@ let webApp =
             ]       
         PUT >=> 
             choose [
-                route "/posts" >=> createPost
-            ]         
+                route "/posts" >=> createPost 
+            ]
         setStatusCode 404 >=> text "Not Found" 
     ]
 
